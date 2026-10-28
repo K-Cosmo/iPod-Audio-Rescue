@@ -20,7 +20,7 @@
 | Selbst gebautes GnuTLS | Upstream `3.8.3` mit `--enable-ssl3-support` |
 | Ubuntu-`libplist` | 2.3.0, erfordert Kompatibilitätskorrektur in libimobiledevice |
 
-Die Anleitung dokumentiert **eine konkret funktionierende Geräte-/Firmware-Kombination**, keine allgemeine Unterstützung aller iPods. Keine UDID, Seriennummer, privaten Schlüssel oder vollständigen Lockdown-Dumps ins öffentliche Repository übernehmen.
+Die Anleitung dokumentiert **eine konkret funktionierende Geräte-/Firmware-Kombination**, keine allgemeine Unterstützung aller iPods.
 
 ## 2. Warum der Standardweg nicht funktioniert
 
