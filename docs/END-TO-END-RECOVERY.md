@@ -220,7 +220,7 @@ Bei vielen alten Geräten sind MP3 und AAC in `.m4a` gemischt. **Der rekonstruie
 | [`scripts/reconcile_itunesdb.py`](../scripts/reconcile_itunesdb.py) | Datenbank und Tags über Dateipfade abgleichen |
 | [`scripts/export_ipod_from_plan.py`](../scripts/export_ipod_from_plan.py) | Freigegebene Titel byteidentisch kopieren |
 | [`scripts/verify_ipod_export.py`](../scripts/verify_ipod_export.py) | Original- und Export-SHA-256 unabhängig vergleichen |
-| [`scripts/resume_mp3_conversion.py`](../scripts/resume_mp3_conversion.py) | MP3 mit Checkpoints und kontrolliertem Rettungsfallback |
+| [`scripts/convert_audio_to_mp3.py`](../scripts/convert_audio_to_mp3.py) | MP3 mit Checkpoints und kontrolliertem Rettungsfallback |
 | [`scripts/verify_mp3_conversion.py`](../scripts/verify_mp3_conversion.py) | MP3-Endbibliothek unabhängig erneut hashen |
 
 **KI ist optional:** Die ursprüngliche Rettung wurde durch einen Assistenten bei Fehlersuche, Skripterstellung und Metadatenbewertung unterstützt. Der hier beschriebene Open-Source-Pfad **funktioniert offline und ohne KI**. Automatische Albumgruppierungen sind Heuristiken: Nutzer müssen im CSV kontrollieren, statt vermeintlich „richtige“ Albumtitel oder Reihenfolgen ungeprüft zu übernehmen.
@@ -230,8 +230,6 @@ Bei vielen alten Geräten sind MP3 und AAC in `.m4a` gemischt. **Der rekonstruie
 ## 7. Ergebnis und Grenzen des nachgewiesenen Verfahrens
 
 Der hier dokumentierte Rettungsweg wurde an einem historischen iPod erfolgreich durchlaufen: **AFC-Rohbackup, iTunesDB-Abgleich, strukturierter Audioexport und separate MP3-Konvertierung**. Für den strukturierten Export wurde SHA-256 unabhängig mit dem Rohbackup verglichen; die abschließende MP3-Prüfung hat ebenfalls **`PASS` gegen die tatsächlich vorhandenen Audioquelldateien und MP3-Zieldateien** ergeben.
-
-Die individuellen Zahlen der Audiosammlung (Titelanzahl, Datengrößen, Methodenverteilung und persönliche Dateinamen) werden bewusst **nicht** im öffentlichen Repository veröffentlicht. Solche Angaben sind für das Nachmachen nicht notwendig.
 
 Im ursprünglichen Rettungsfall wurde eine nicht abspielbare Datei nach der erfolgreichen Prüfung aus dem *strukturierten* Quellordner entfernt. Eine zuvor erfolgte Verifikation bezieht sich daher auf den damaligen Ordnerzustand. Der später geprüfte MP3-Zielbestand wurde mit den tatsächlich noch vorhandenen Quelldateien abgeglichen.
 
