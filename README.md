@@ -29,13 +29,13 @@ Der Leitfaden entstand bei der erfolgreichen Rettung eines **iPod touch der 1. G
 
 ## Nachprüfbarer Abschluss
 
-Der im Leitfaden beschriebene Ablauf wurde an einem echten Legacy-iPod erfolgreich ausgeführt: Der Rohbestand wurde gesichert, die Audiosammlung rekonstruiert und eine separate MP3-Kompatibilitätskopie erstellt. **Beide strukturierten Ausgabestufen wurden unabhängig mit SHA-256 gegen ihre jeweiligen Quelldateien geprüft.** Konkrete Bestandszahlen, Dateigrößen und private Audiotitel sind bewusst nicht Bestandteil dieser öffentlichen Dokumentation.
+Der im Leitfaden beschriebene Ablauf wurde an einem echten Legacy-iPod erfolgreich ausgeführt: Der Rohbestand wurde gesichert, die Audiosammlung rekonstruiert und eine separate MP3-Kompatibilitätskopie erstellt. **Beide strukturierten Ausgabestufen wurden unabhängig mit SHA-256 gegen ihre jeweiligen Quelldateien geprüft.**
 
 Die Prüfprogramme stehen allen zur Verfügung: [`verify_ipod_export.py`](scripts/verify_ipod_export.py) für den byteidentischen Audioexport und [`verify_mp3_conversion.py`](scripts/verify_mp3_conversion.py) für die fertige MP3-Bibliothek.
 
 ## Was ist bewusst nicht enthalten?
 
-Kein iPod-Restore, keine iTunes-Synchronisation, kein Jailbreak, kein DRM-Bypass und keine zweifelhaften Web-Konverter. Die nicht verwendete PowerShell-Kopiervariante wurde aus dem Projekt entfernt; der **tatsächlich erprobte Weg** führt über WSL/Linux mit read-only ifuse und rsync.
+Kein iPod-Restore, keine iTunes-Synchronisation, kein Jailbreak, kein DRM-Bypass und keine zweifelhaften Web-Konverter. Der **erprobte Extraktionsweg** führt über WSL/Linux mit read-only ifuse und rsync.
 
 Die Werkzeuge sind bewusst offline nutzbar. Ein KI-Assistent kann bei der Sichtung einzelner Metadaten helfen, ist aber **keine Voraussetzung** und darf unbekannte Tracknummern nicht erfinden.
 
