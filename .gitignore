@@ -1,0 +1,43 @@
+# Runtime files, personal media and backups must never be published
+*.partial
+*.log
+.DS_Store
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Raw device media, iTunesDB and private pairing material
+iPod_Control/
+iTunes_Control/
+ipod-media/
+ipod-rescue-media.*/
+backup/
+backups/
+iTunesDB
+iTunesCDB
+iTunesSD
+iTunesPrefs
+*.plist
+*.pem
+*.key
+*.p12
+
+# Personal music, video, inventories, manifests, recovery packages
+*.mp3
+*.m4a
+*.m4p
+*.m4v
+*.mp4
+*.aac
+*.aif
+*.aiff
+*.wav
+*.flac
+*.mov
+*.avi
+*.csv
+*.xlsx
+*.zip
+*.sha256
+*.sqlite
+*.db
