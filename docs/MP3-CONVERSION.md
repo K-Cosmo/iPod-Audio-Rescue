@@ -33,12 +33,12 @@ mkdir -p "$MP3"
 
 **Platz beachten:** MP3 V0 kann deutlich **größer** werden als AAC mit 128 kbit/s. Die Originalbibliothek weder überschreiben noch aus Platzgründen löschen. `AUDIO` darf auch unter `/mnt/d/...` liegen; Pfade sind Beispiele.
 
-`scripts/convert_music_to_mp3.py` enthält den **streng abbrechenden Basis-Encoder**. Für neue und wiederaufgenommene Alltagsläufe empfehlen wir `scripts/resume_mp3_conversion.py` mit automatischer Rettung fehlertoleranter Titel. Beide Werkzeuge sind Open Source, offline und ändern die Quellen nicht.
+`scripts/convert_audio_to_mp3.py` ist der einzige Konvertierungseinstieg: Trockenlauf, strenge LAME-V0-Konvertierung, automatischer Rettungsversuch und Wiederaufnahme per Checkpoint. Die Quelldateien bleiben unverändert.
 
 ## 2. Vorab prüfen – Trockenlauf
 
 ```bash
-python3 scripts/resume_mp3_conversion.py \
+python3 scripts/convert_audio_to_mp3.py \
   --source "$AUDIO" \
   --output "$MP3"
 ```
@@ -48,7 +48,7 @@ Das Programm liest mit `ffprobe` alle Audio-Dateien, erkennt den echten Codec, p
 Wenn eine M4A bereits nicht mit `ffprobe` geöffnet werden kann (beispielsweise `moov atom not found`), **bricht diese Vorprüfung absichtlich ab**. Den betroffenen Titel zunächst untersuchen, statt die ganze Sammlung ungeprüft zu verändern. Eine **ausdrücklich bestätigte, ausschließlich unlesbare** Quelldatei lässt sich über ihren exakten quellrelativen Pfad ausnehmen:
 
 ```bash
-python3 scripts/resume_mp3_conversion.py \
+python3 scripts/convert_audio_to_mp3.py \
   --source "$AUDIO" --output "$MP3" \
   --exclude-unreadable "Album/01 - Defekter Titel.m4a"
 ```
@@ -60,7 +60,7 @@ Der angegebene Pfad ist **nur ein Beispiel**. Nur vorhandene, von `ffprobe` tats
 **Nach erfolgreichem Trockenlauf** (ohne Ausnahmeparameter, wenn keine Ausnahme nötig ist):
 
 ```bash
-python3 scripts/resume_mp3_conversion.py \
+python3 scripts/convert_audio_to_mp3.py \
   --source "$AUDIO" \
   --output "$MP3" \
   --execute
@@ -84,8 +84,6 @@ Je neuer Audio-Datei geschieht Folgendes:
 | `_mp3_conversion_failures.csv` | Fehlgeschlagene Versuche; **können historische, später erfolgreich gerettete Fälle enthalten** |
 | `_mp3_conversion_exclusions.csv` | Ausdrücklich ausgenommene unlesbare/fehlerhafte Dateien, falls verwendet |
 
-Die CSVs enthalten gegebenenfalls private Titelnamen – **nicht ins öffentliche GitHub-Repository committen**.
-
 ### Wiederaufnahme nach Stromausfall oder Decoderfehler
 
 **Denselben Befehl erneut ausführen.** Bereits vorhandene MP3s werden niemals überschrieben:
@@ -100,7 +98,7 @@ Die CSVs enthalten gegebenenfalls private Titelnamen – **nicht ins öffentlich
 In Einzelfällen kann ein manuell mit FFmpeg ohne `-xerror` erzeugter Versuch besser klingen. Nach der **Hörkontrolle** erlaubt der Konverter, genau **eine** solche MP3 mit Quellpfad und Dateipfad explizit einzubinden:
 
 ```bash
-python3 scripts/resume_mp3_conversion.py \
+python3 scripts/convert_audio_to_mp3.py \
   --source "$AUDIO" --output "$MP3" \
   --recovery-source "Album/03 - Interpret - Titel.m4a" \
   --recovery-mp3 "$HOME/Testdatei.mp3" \
@@ -109,7 +107,7 @@ python3 scripts/resume_mp3_conversion.py \
 
 Das ist optional und **nicht** der Standardweg. Das Skript prüft Herkunft, MP3-Dekodierbarkeit, Hash und maximal zwei Sekunden Laufzeitdifferenz. Es ersetzt keine schon vorhandene Zieldatei.
 
-## 4. Unabhaengig pruefen und archivieren
+## 4. Unabhängig prüfen und archivieren
 
 Das Exportmanifest ist nur ein Protokoll. **Eine unabhängige erneute Prüfung muss die tatsächlichen MP3-Dateien lesen**. Dafür gibt es ein gesondertes, **read-only** Skript:
 
@@ -132,10 +130,10 @@ Bei Erfolg erscheint `PASS: <Anzahl> MP3 files, <Bytes> bytes; SHA-256 verified 
 
 **Langzeitaufbewahrung:** (1) Rohbackup **inklusive iTunesDB** und SHA-256, (2) unabhängig geprüfte strukturierte Bibliothek mit Original-AAC/MP3, (3) MP3-Zweitbibliothek mit Manifesten. Im Fehlerfall auf das Rohbackup zurückkommen können.
 
-## 5. Nachgewiesener Abschluss ohne persönliche Bibliotheksdaten
+## 5. Nachgewiesener Abschluss
 
 Die hier dokumentierte MP3-Konvertierung wurde erfolgreich durchgeführt und das Endergebnis **nachträglich unabhängig mit `scripts/verify_mp3_conversion.py` geprüft**. Dabei wurden sowohl die tatsächlich vorhandenen MP3-Zieldateien als auch ihre jeweiligen Audio-Quelldateien per **SHA-256** mit dem Abschlussmanifest verglichen; Ergebnis: **`PASS`**. Auch die gesondert dokumentierte automatische Rettung ist mit dem Abschlussmanifest abgeglichen.
 
-Die individuellen Datei- und Größenstatistiken der Beispielsammlung werden aus Datenschutzgründen nicht veröffentlicht. Nachmachen lässt sich das Ergebnis mit dem Befehl in **Abschnitt 4**. Wenn einzelne Quell-AACs beschädigt waren, die protokollierten Rettungsfassungen zusätzlich anhören.
+Nachmachen lässt sich das Ergebnis mit dem Befehl in **Abschnitt 4**. Wenn einzelne Quell-AACs beschädigt waren, die protokollierten Rettungsfassungen zusätzlich anhören.
 
 [← Zur Übersicht](../README.md) · [Archiv und Rekonstruktion](END-TO-END-RECOVERY.md)
