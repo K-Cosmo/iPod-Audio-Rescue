@@ -30,8 +30,7 @@ jobs:
           from unittest.mock import patch
 
           sys.path.insert(0, str(Path.cwd() / 'scripts'))
-          import convert_music_to_mp3 as base
-          import resume_mp3_conversion as resume
+          import convert_audio_to_mp3 as convert
 
           def ffmpeg(*args):
               subprocess.run(['ffmpeg', '-nostdin', '-hide_banner',
@@ -51,7 +50,7 @@ jobs:
                      '-c:a','libmp3lame','-q:a','0',mp3)
               shutil.copyfile(mp3, out / 'Album' / mp3.name)
               # An unfinished legacy destination already contains a valid MP3.
-              subprocess.run([sys.executable, 'scripts/resume_mp3_conversion.py',
+              subprocess.run([sys.executable, 'scripts/convert_audio_to_mp3.py',
                               '--source',str(src),'--output',str(out),'--execute'],check=True)
               manifest = out / '_mp3_conversion_manifest.csv'
               with manifest.open(newline='',encoding='utf-8-sig') as f:
@@ -63,21 +62,21 @@ jobs:
               assert (out/'_mp3_conversion_progress.csv').is_file()
               # Normal checkpoints should be cheap: no hashes read.
               row = next(r for r in rows if r['action'] == 'copy_mp3')
-              with patch.object(base, 'sha256', side_effect=AssertionError('unwanted rehash')):
-                  resume.validate_row(row,mp3,Path('Album')/mp3.name,
+              with patch.object(convert, 'sha256', side_effect=AssertionError('unwanted rehash')):
+                  convert.validate_row(row,mp3,Path('Album')/mp3.name,
                       out/'Album'/mp3.name,Path('Album')/mp3.name,
-                      'copy_mp3','mp3',base.probe(mp3),{},audit=False)
+                      'copy_mp3','mp3',convert.probe(mp3),{},audit=False)
               # Force a strict-encode failure and check the tolerant fallback.
               recovery_dst = root / 'fallback.mp3'
-              with patch.object(base, 'transcode_verified',
+              with patch.object(convert, 'transcode_verified',
                                 side_effect=ValueError('synthetic strict failure')):
-                  info, provenance = resume.transcode_auto_rescue(
-                      aac,recovery_dst,base.probe(aac),Path('Album')/aac.name,
+                  info, provenance = convert.transcode_auto_rescue(
+                      aac,recovery_dst,convert.probe(aac),Path('Album')/aac.name,
                       Path('Album')/'01 - Original.mp3')
               assert recovery_dst.is_file()
               assert provenance and provenance['note'].startswith('AUTO_RESCUE:')
               assert abs(float(provenance['source_duration'])
                          - float(provenance['target_duration'])) <= 2.0
-              assert base.audio_info(info)[0] == 'mp3'
+              assert convert.audio_info(info)[0] == 'mp3'
           print('All MP3 rescue smoke tests passed')
           PY
