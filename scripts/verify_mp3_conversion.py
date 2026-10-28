@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Independent read-only SHA-256 audit of a completed MP3 conversion.
 
-Requires the _mp3_conversion_manifest.csv written by convert_music_to_mp3.py
-or resume_mp3_conversion.py. Optionally hashes all source files as well.
+Requires the _mp3_conversion_manifest.csv written by convert_audio_to_mp3.py.
+Optionally hashes all original audio files as well.
 No media is changed, decoded, renamed or deleted.
 """
 from __future__ import annotations
